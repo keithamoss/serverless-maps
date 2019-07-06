@@ -2,6 +2,8 @@
 
 > Servers? Where we're going we don't need servers.
 
+# Welcome
+
 This tutorial will step through a simple process for creating a serverless\* web map using vector tiles.
 
 Our intended audience is folks with:
@@ -14,6 +16,14 @@ Our intended audience is folks with:
 We'll be using Mapbox GL JS as our mapping software, but both OpenLayers and Leaflet would work equally well.
 
 \* For our purposes "serverless" means "will run on the web server you already have for serving static content"
+
+# Prior Art
+
+Many thanks and much kudos to Mark Varley for his [Serverless Vector Tiles on AWS](https://github.com/addresscloud/serverless-tiles) tutorial and FOSS4G 2018 Tanzania presentation that gives a much more comprehensive and advanced approach to truly serverless vector tile maps. This tutorial is lifts a lot from Mark's work.
+
+Hat tip too to [tilecloud](https://github.com/camptocamp/tilecloud) for a more software developery set of tools.
+
+Thanks as well to all of the giants on whose shoulders we're standing - with a lot of amazing open source software none of this would be possible or accessible to this audience.
 
 # 0. Requirements
 
@@ -281,9 +291,3 @@ Set the MIME type for the `.pbf` tile files to `application/vnd.mapbox-vector-ti
 Fire up your web browser and your map should now be published!
 
 **Note:** Depending on the amount and distribution of the data you're using you may have thousands or tens of thousands of `.pbf` tiles! If you web host or FTP client support it, try uploading a ZIP file and uncompressing it on the server itself. This is usually available on the right-click menus on your web host's file browser or in your FTP client.
-
-# Prior Art
-
-Many thanks and much kudos to Mark Varley for his [Serverless Vector Tiles on AWS](https://github.com/addresscloud/serverless-tiles) tutorial and FOSS4G 2018 Tanzania presentation that gives a much more comprehensive and advanced approach to truly serverless vector tile maps.
-
-Hat tip too to [tilecloud](https://github.com/camptocamp/tilecloud) for a more software developery set of tools.
