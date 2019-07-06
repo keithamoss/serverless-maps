@@ -1,0 +1,64 @@
+{
+    "version": 8,
+    "name": "Serverless Maps Example",
+    "id": "serverless-maps",
+    "sources": {
+        "natural_earth": {
+            "type": "vector",
+            "url": "./tiles/natural_earth/tile.json"
+        },
+        "city_of_sydney": {
+            "type": "vector",
+            "url": "./tiles/city_of_sydney/tile.json"
+        }
+    },
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "paint": {
+                "background-color": "#0077be",
+                "background-opacity": 0.6
+            }
+        },
+        {
+            "id": "ne_10m_land",
+            "type": "fill-extrusion",
+            "source": "natural_earth",
+            "source-layer": "ne_10m_land",
+            "paint": {
+                "fill-extrusion-color": "#cc5500",
+                "fill-extrusion-base": 300
+            }
+        },
+        {
+            "id": "Cycle_network",
+            "type": "line",
+            "source": "city_of_sydney",
+            "source-layer": "Cycle_network",
+            "layout": {
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#ffffff",
+                "line-width": {
+                    "base": 1.3,
+                    "stops": [[13, 0.5], [20, 6]]
+                }
+            }
+        },
+        {
+            "id": "Drinking_fountains_water_bubblers",
+            "type": "circle",
+            "source": "city_of_sydney",
+            "source-layer": "Drinking_fountains_water_bubblers",
+            "paint": {
+                "circle-radius": {
+                    "base": 1.75,
+                    "stops": [[12, 3], [22, 500]]
+                },
+                "circle-color": "#3bb2d0"
+            }
+        }
+    ]
+}
