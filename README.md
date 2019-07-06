@@ -29,6 +29,18 @@ Then [download this repository](https://github.com/keithamoss/serverless-maps/ar
 
 We can't have a map without some data can we? We'll be making a map of the cycle network and drinking fountains in Sydney, Australia.
 
+Grab the following datasets and unzip them into the following directory structure:
+
+```
+data/
+  city_of_sydney/
+    Cycle_network/
+      Cycle_network.shp
+    Drinking_fountains_water_bubblers/
+  natural_earth/
+    ne_10m_land/
+```
+
 ## Natural Earth
 
 -   [1:10m Physical Vectors: Land](https://www.naturalearthdata.com/downloads/10m-physical-vectors/)
@@ -54,7 +66,7 @@ ogr2ogr -f GeoJSON data/city_of_sydney/Drinking_fountains_water_bubblers.geojson
 
 # 3. Create vector tiles with Tippecanoe
 
-Now that we've got some GeoJSON we can generate our vector tiles with Tippecanoe.
+Now that we've got some GeoJSON we can generate our vector tiles.
 
 Run these commands to generate your two `.mbtiles` files containing the Natural Earth and City of Sydney data we downloaded earlier.
 
@@ -64,18 +76,20 @@ tippecanoe --maximum-zoom=g -o data/natural_earth.mbtiles --drop-densest-as-need
 tippecanoe --maximum-zoom=g -o data/city_of_sydney.mbtiles --drop-densest-as-needed --extend-zooms-if-still-dropping --no-tile-compression data/city_of_sydney/*.geojson
 ```
 
-`--maximum-zoom=g`: Automatically choose a maxzoom that should be sufficient to clearly distinguish the features and the detail within each feature
-`--drop-densest-as-needed`: If the tiles are too big at low zoom levels, drop the least-visible features to allow tiles to be created with those features that remain
-`--extend-zooms-if-still-dropping`: If even the tiles at high zoom levels are too big, keep adding zoom levels until one is reached that can represent all the features
-`--no-tile-compression`: Don't compress the PBF vector tile data.
+-   `--maximum-zoom=g`: Automatically choose a maxzoom that should be sufficient to clearly distinguish the features and the detail within each feature
+-   `--drop-densest-as-needed`: If the tiles are too big at low zoom levels, drop the least-visible features to allow tiles to be created with those features that remain
+-   `--extend-zooms-if-still-dropping`: If even the tiles at high zoom levels are too big, keep adding zoom levels until one is reached that can represent all the features
+-   `--no-tile-compression`: Don't compress the PBF vector tile data.
 
-**Note:** We're using `--no-tile-compression` because we're assuming the simple web server setup we're using can't set the `Content-Encoding: gzip` header. If that's not the case, feel free to remove this option when you generate your tiles.
+**Note:** We're using `--no-tile-compression` because we're assuming the simple web server setup we're using can't set the `Content-Encoding: gzip` header for our tiles. If that's not the case, feel free to remove this option when you generate your tiles.
 
 Tippecanoe has a [multitude of other options](https://github.com/mapbox/tippecanoe#options) to control exactly how it generates these tiles. They're well worth a look through to familiarise yourself with its more advanced capabilities.
 
 # 4. Unpack the vector tiles
 
-With our `.mbtiles` files made we now need to unpack them into the individual `.pbf` ([Protocolbuffer Binary Format](https://wiki.openstreetmap.org/wiki/PBF_Format)) files for each tile your map will need.
+With our `.mbtiles` files ready we now need to unpack them into the individual `.pbf` ([Protocolbuffer Binary Format](https://wiki.openstreetmap.org/wiki/PBF_Format)) files for each tile that will make up your map.
+
+Create a folder called `tiles` and run the following commands:
 
 ```
 mb-util --image_format=pbf data/natural_earth.mbtiles tiles/natural_earth/
@@ -100,7 +114,7 @@ tiles/
 
 # 5. Create `tile.json` files
 
-With our tiles created we need to do a bit of processing of the `metadata.json` files that Tippecanoe created.
+Now that our tiles are created we need to do a bit of processing of the `metadata.json` files that Tippecanoe generated for us.
 
 There's a few things you need to do to translate the `metadata.json` file into the `tile.json` file expected by MapBox GL JS. To save unnecesasary copy/pasting there's a Python script in this repository to handle the translation.
 
@@ -187,45 +201,55 @@ This is a simple style that will:
 -   Show light blue circles for the drinking fountains
 
 ```json
-({
-    "id": "ne_10m_land",
-    "type": "fill-extrusion",
-    "source": "natural_earth",
-    "source-layer": "ne_10m_land",
-    "paint": {
-        "fill-extrusion-color": "#cc5500",
-        "fill-extrusion-base": 300
-    }
-},
-{
-    "id": "Cycle_network",
-    "type": "line",
-    "source": "city_of_sydney",
-    "source-layer": "Cycle_network",
-    "layout": {
-        "line-cap": "round"
+"layers": [
+    {
+        "id": "background",
+        "type": "background",
+        "paint": {
+            "background-color": "#0077be",
+            "background-opacity": 0.6
+        }
     },
-    "paint": {
-        "line-color": "#ffffff",
-        "line-width": {
-            "base": 1.3,
-            "stops": [[13, 0.5], [20, 6]]
+    {
+        "id": "ne_10m_land",
+        "type": "fill-extrusion",
+        "source": "natural_earth",
+        "source-layer": "ne_10m_land",
+        "paint": {
+            "fill-extrusion-color": "#cc5500",
+            "fill-extrusion-base": 300
+        }
+    },
+    {
+        "id": "Cycle_network",
+        "type": "line",
+        "source": "city_of_sydney",
+        "source-layer": "Cycle_network",
+        "layout": {
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#ffffff",
+            "line-width": {
+                "base": 1.3,
+                "stops": [[13, 0.5], [20, 6]]
+            }
+        }
+    },
+    {
+        "id": "Drinking_fountains_water_bubblers",
+        "type": "circle",
+        "source": "city_of_sydney",
+        "source-layer": "Drinking_fountains_water_bubblers",
+        "paint": {
+            "circle-radius": {
+                "base": 1.75,
+                "stops": [[12, 3], [22, 500]]
+            },
+            "circle-color": "#3bb2d0"
         }
     }
-},
-{
-    "id": "Drinking_fountains_water_bubblers",
-    "type": "circle",
-    "source": "city_of_sydney",
-    "source-layer": "Drinking_fountains_water_bubblers",
-    "paint": {
-        "circle-radius": {
-            "base": 1.75,
-            "stops": [[12, 3], [22, 500]]
-        },
-        "circle-color": "#3bb2d0"
-    }
-})
+]
 ```
 
 This doesn't even begin to scrach the surface of the styling capabilities of Mapbox GL JS. Check out their [examples](https://docs.mapbox.com/mapbox-gl-js/examples/) pages and their [style specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/) for more.
@@ -234,17 +258,19 @@ Reload your map again and you should see something like this:
 
 ![Our map](static/serverless-map-example.png)
 
+Such cartography. Wow!
+
 # 8. Publish your map
 
 You're almost done! Now you just need to upload your map somewhere - any regular web host or web server will do the trick.
 
 ## Re-run `create-tile-json.py`
 
-Remember to re-run `python create-tile-json.py` from Step 5 to generate new `tile.json` files that include the URL you'll be publishing them to (instead of `http://0.0.0.0:8000/`).
+Remember to re-run `python create-tile-json.py` from Step 5 to generate new `tile.json` files that include the URL you'll be publishing them to (instead of `http://0.0.0.0:8000/`). (Or feel free to edit the files directly and update the `tiles` property to point to the right URL.)
 
-## Mime types
+## MIME types
 
-Set the mime type for the `.pbf` tile files to `application/vnd.mapbox-vector-tile` on your web server. This will let your user's web browsers know how to correctly interpret the vector tiles.
+Set the MIME type for the `.pbf` tile files to `application/vnd.mapbox-vector-tile` on your web server. This will let your user's web browsers know how to correctly interpret the vector tiles.
 
 ## Upload your map
 
@@ -253,6 +279,8 @@ Set the mime type for the `.pbf` tile files to `application/vnd.mapbox-vector-ti
 -   and the contents of the `tiles/` directory
 
 Fire up your web browser and your map should now be published!
+
+**Note:** Depending on the amount and distribution of the data you're using you may have thousands or tens of thousands of `.pbf` tiles! If you web host or FTP client support it, try uploading a ZIP file and uncompressing it on the server itself. This is usually available on the right-click menus on your web host's file browser or in your FTP client.
 
 # Prior Art
 
