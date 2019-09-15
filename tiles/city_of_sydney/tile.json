@@ -8,9 +8,7 @@
     "maxzoom": "11",
     "minzoom": "0",
     "name": "data/city_of_sydney.mbtiles",
-    "tiles": [
-        "http://0.0.0.0:8000/tiles/city_of_sydney/{z}/{x}/{y}.pbf"
-    ],
+    "tiles": ["https://keithamoss.github.io/serverless-maps/tiles/city_of_sydney/{z}/{x}/{y}.pbf"],
     "type": "overlay",
     "vector_layers": [
         {

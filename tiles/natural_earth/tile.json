@@ -8,9 +8,7 @@
     "maxzoom": "5",
     "minzoom": "0",
     "name": "data/natural_earth.mbtiles",
-    "tiles": [
-        "http://0.0.0.0:8000/tiles/natural_earth/{z}/{x}/{y}.pbf"
-    ],
+    "tiles": ["https://keithamoss.github.io/serverless-maps/tiles/natural_earth/{z}/{x}/{y}.pbf"],
     "type": "overlay",
     "vector_layers": [
         {
