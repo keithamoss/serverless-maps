@@ -1,0 +1,29 @@
+{
+    "bounds": "-180.000000,-85.051129,180.000000,83.634101",
+    "center": "-73.125000,-52.349536,5",
+    "description": "data/natural_earth.mbtiles",
+    "format": "pbf",
+    "generator": "tippecanoe v1.34.3",
+    "generator_options": "tippecanoe '--maximum-zoom=g' -o data/natural_earth.mbtiles --drop-densest-as-needed --extend-zooms-if-still-dropping --no-tile-compression data/natural_earth/ne_10m_land.geojson",
+    "maxzoom": "5",
+    "minzoom": "0",
+    "name": "data/natural_earth.mbtiles",
+    "tiles": [
+        "http://0.0.0.0:8000/tiles/natural_earth/{z}/{x}/{y}.pbf"
+    ],
+    "type": "overlay",
+    "vector_layers": [
+        {
+            "description": "",
+            "fields": {
+                "featurecla": "String",
+                "min_zoom": "Number",
+                "scalerank": "Number"
+            },
+            "id": "ne_10m_land",
+            "maxzoom": 5,
+            "minzoom": 0
+        }
+    ],
+    "version": "2"
+}

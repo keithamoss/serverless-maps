@@ -1,0 +1,43 @@
+{
+    "bounds": "151.168304,-33.926987,151.244756,-33.851593",
+    "center": "151.244756,-33.926987,11",
+    "description": "data/city_of_sydney.mbtiles",
+    "format": "pbf",
+    "generator": "tippecanoe v1.34.3",
+    "generator_options": "tippecanoe '--maximum-zoom=g' -o data/city_of_sydney.mbtiles --drop-densest-as-needed --extend-zooms-if-still-dropping --no-tile-compression data/city_of_sydney/Cycle_network.geojson data/city_of_sydney/Drinking_fountains_water_bubblers.geojson",
+    "maxzoom": "11",
+    "minzoom": "0",
+    "name": "data/city_of_sydney.mbtiles",
+    "tiles": [
+        "http://0.0.0.0:8000/tiles/city_of_sydney/{z}/{x}/{y}.pbf"
+    ],
+    "type": "overlay",
+    "vector_layers": [
+        {
+            "description": "",
+            "fields": {
+                "OBJECTID": "Number",
+                "RouteType": "String",
+                "Shape__Len": "Number",
+                "Source": "String"
+            },
+            "id": "Cycle_network",
+            "maxzoom": 11,
+            "minzoom": 0
+        },
+        {
+            "description": "",
+            "fields": {
+                "Accessible": "String",
+                "Location": "String",
+                "OBJECTID": "Number",
+                "Suburb": "String",
+                "site_name": "String"
+            },
+            "id": "Drinking_fountains_water_bubblers",
+            "maxzoom": 11,
+            "minzoom": 0
+        }
+    ],
+    "version": "2"
+}

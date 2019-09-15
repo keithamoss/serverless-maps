@@ -1,0 +1,14 @@
+{
+    "name": "data/natural_earth.mbtiles",
+    "description": "data/natural_earth.mbtiles",
+    "version": "2",
+    "minzoom": "0",
+    "maxzoom": "5",
+    "center": "-73.125000,-52.349536,5",
+    "bounds": "-180.000000,-85.051129,180.000000,83.634101",
+    "type": "overlay",
+    "format": "pbf",
+    "generator": "tippecanoe v1.34.3",
+    "generator_options": "tippecanoe '--maximum-zoom=g' -o data/natural_earth.mbtiles --drop-densest-as-needed --extend-zooms-if-still-dropping --no-tile-compression data/natural_earth/ne_10m_land.geojson",
+    "json": "{\"vector_layers\": [ { \"id\": \"ne_10m_land\", \"description\": \"\", \"minzoom\": 0, \"maxzoom\": 5, \"fields\": {\"featurecla\": \"String\", \"min_zoom\": \"Number\", \"scalerank\": \"Number\"} } ],\"tilestats\": {\"layerCount\": 1,\"layers\": [{\"layer\": \"ne_10m_land\",\"count\": 10,\"geometry\": \"Polygon\",\"attributeCount\": 3,\"attributes\": [{\"attribute\": \"featurecla\",\"count\": 2,\"type\": \"string\",\"values\": [\"Land\",\"Null island\"]},{\"attribute\": \"min_zoom\",\"count\": 10,\"type\": \"number\",\"values\": [0,0.5,1,1.5,100,2,3,4,5,6],\"min\": 0,\"max\": 100},{\"attribute\": \"scalerank\",\"count\": 6,\"type\": \"number\",\"values\": [0,1,100,3,5,6],\"min\": 0,\"max\": 100}]}]}}"
+}
